@@ -1,0 +1,1757 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Clear Mind Meets API",
+    "version": "1.0.0",
+    "description": "API documentation for the Clear Mind Meets project."
+  },
+  "servers": [
+    {
+      "url": "https://api.clearmindmeets.com",
+      "description": "Production server"
+    },
+    {
+      "url": "https://staging.api.clearmindmeets.com",
+      "description": "Staging server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Auth (user)",
+      "description": "user auth apis"
+    }
+  ],
+  "paths": {
+    "/user/auth/sendOtp": {
+      "post": {
+        "tags": [
+          "Auth (user)"
+        ],
+        "summary": "Send OTP for signin or signup",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "signin",
+                      "signup"
+                    ],
+                    "description": "The type of OTP operation"
+                  }
+                },
+                "required": [
+                  "type"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OTP sent successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Otp sent successfully"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/auth/signUp": {
+      "post": {
+        "tags": [
+          "Auth (user)"
+        ],
+        "summary": "User signup with email or mobile",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "Email address of the user (optional)"
+                  },
+                  "mobileNumber": {
+                    "type": "string",
+                    "description": "Mobile number of the user (optional)"
+                  },
+                  "otp": {
+                    "type": "string",
+                    "description": "OTP for verification (optional)"
+                  },
+                  "deviceId": {
+                    "type": "string",
+                    "description": "Unique device ID"
+                  },
+                  "deviceType": {
+                    "type": "string",
+                    "description": "Type of device (e.g., iOS, Android)"
+                  },
+                  "fcmToken": {
+                    "type": "string",
+                    "description": "Firebase Cloud Messaging token for push notifications"
+                  }
+                },
+                "required": [
+                  "deviceId",
+                  "deviceType",
+                  "fcmToken"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Signup successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "accessToken": {
+                          "type": "string",
+                          "description": "JWT access token"
+                        },
+                        "_id": {
+                          "type": "string",
+                          "description": "User ID"
+                        },
+                        "isOnboardingCompleted": {
+                          "type": "boolean",
+                          "description": "User ID"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/auth/signIn": {
+      "post": {
+        "tags": [
+          "Auth (user)"
+        ],
+        "summary": "User signin with social login or phone",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "Email address of the user (optional)"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "social",
+                      "phone"
+                    ],
+                    "description": "The signin type"
+                  },
+                  "mobileNumber": {
+                    "type": "string",
+                    "description": "Mobile number of the user (optional)"
+                  },
+                  "otp": {
+                    "type": "string",
+                    "description": "OTP for phone signin (optional)"
+                  },
+                  "deviceId": {
+                    "type": "string",
+                    "description": "Unique device ID"
+                  },
+                  "deviceType": {
+                    "type": "string",
+                    "description": "Type of device (e.g., iOS, Android)"
+                  },
+                  "fcmToken": {
+                    "type": "string",
+                    "description": "Firebase Cloud Messaging token for push notifications"
+                  }
+                },
+                "required": [
+                  "type",
+                  "deviceId",
+                  "deviceType",
+                  "fcmToken"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Signin successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "accessToken": {
+                          "type": "string",
+                          "description": "JWT access token"
+                        },
+                        "_id": {
+                          "type": "string",
+                          "description": "User ID"
+                        },
+                        "isOnboardingCompleted": {
+                          "type": "boolean",
+                          "description": "User ID"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/update/{id}": {
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Update user details",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID of the user to update",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "age": {
+                    "type": "number",
+                    "description": "Age of the user"
+                  },
+                  "birthDate": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "Birth date of the user"
+                  },
+                  "gender": {
+                    "type": "string",
+                    "description": "Gender of the user"
+                  },
+                  "pronouns": {
+                    "type": "string",
+                    "description": "Pronouns of the user"
+                  },
+                  "lookingFor": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "What the user is looking for"
+                  },
+                  "doesDrink": {
+                    "type": "string",
+                    "description": "User's drinking habits"
+                  },
+                  "doesSmoke": {
+                    "type": "string",
+                    "description": "User's smoking habits"
+                  },
+                  "doesExercise": {
+                    "type": "string",
+                    "description": "User's exercise habits"
+                  },
+                  "lovePets": {
+                    "type": "string",
+                    "description": "Does the user love pets"
+                  },
+                  "bio": {
+                    "type": "string",
+                    "description": "User's bio"
+                  },
+                  "interests": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "User's interests"
+                  },
+                  "languages": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Languages spoken by the user"
+                  },
+                  "communication": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Communication preferences"
+                  },
+                  "receiveLove": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "How the user prefers to receive love"
+                  },
+                  "education": {
+                    "type": "string",
+                    "description": "User's education level"
+                  },
+                  "profession": {
+                    "type": "string",
+                    "description": "User's profession"
+                  },
+                  "religion": {
+                    "type": "string",
+                    "description": "User's religion"
+                  },
+                  "zodiacSign": {
+                    "type": "string",
+                    "description": "User's zodiac sign"
+                  },
+                  "lifestyle": {
+                    "type": "string",
+                    "description": "User's lifestyle"
+                  },
+                  "photos": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "URLs of the user's photos"
+                  },
+                  "causes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Causes the user supports"
+                  },
+                  "community": {
+                    "type": "string",
+                    "description": "User's community"
+                  },
+                  "sexualPreference": {
+                    "type": "string",
+                    "description": "User's sexual preference"
+                  },
+                  "currentLocation": {
+                    "type": "object",
+                    "description": "User's current location",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "example": "Point"
+                      },
+                      "coordinates": {
+                        "type": "array",
+                        "items": {
+                          "type": "number"
+                        },
+                        "description": "Longitude and latitude"
+                      }
+                    }
+                  },
+                  "identity": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "User's identity"
+                  },
+                  "userPreference": {
+                    "type": "object",
+                    "description": "User's preferences",
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "description": "ID of the preference document"
+                      },
+                      "userId": {
+                        "type": "string",
+                        "description": "ID of the user"
+                      },
+                      "relationType": {
+                        "type": "string",
+                        "description": "Type of relationship the user is looking for"
+                      },
+                      "ageRangeMin": {
+                        "type": "number",
+                        "description": "Minimum age range preference"
+                      },
+                      "ageRangeMax": {
+                        "type": "number",
+                        "description": "Maximum age range preference"
+                      },
+                      "educationLevel": {
+                        "type": "string",
+                        "description": "Preferred education level"
+                      },
+                      "lifestyle": {
+                        "type": "string",
+                        "description": "Preferred lifestyle"
+                      },
+                      "communities": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "description": "Preferred communities"
+                      },
+                      "radius": {
+                        "type": "number",
+                        "description": "Search radius in kilometers"
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Preference created date"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Preference updated date"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User details updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "User updated successfully"
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "Updated user data"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/{id}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get details of a specific user by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The ID of the user"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User details retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "User data retrieved successfully"
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "The user data"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/user/list": {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Get a paginated list of users",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "page": {
+                    "type": "integer",
+                    "description": "The page number for pagination",
+                    "example": 1
+                  },
+                  "limit": {
+                    "type": "integer",
+                    "description": "The number of records per page",
+                    "example": 10
+                  },
+                  "search": {
+                    "type": "string",
+                    "description": "Search query to filter users",
+                    "example": "john"
+                  },
+                  "sort": {
+                    "type": "string",
+                    "enum": [
+                      "asc",
+                      "desc"
+                    ],
+                    "description": "Sort order"
+                  },
+                  "sortField": {
+                    "type": "string",
+                    "description": "Field to sort by",
+                    "example": "name"
+                  }
+                },
+                "required": [
+                  "page",
+                  "limit"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User list retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      },
+                      "description": "Array of user data"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User list retrieved successfully"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/user/{id}": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Get details of a specific user by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The ID of the user"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User details retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "User data retrieved successfully"
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "The user data"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/user/export": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Export all users",
+        "responses": {
+          "200": {
+            "description": "User data exported successfully",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary",
+                  "description": "Exported user data file"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/login": {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Admin login",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "Admin email address"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "Admin password"
+                  }
+                },
+                "required": [
+                  "email",
+                  "password"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string"
+                        },
+                        "accessToken": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "login success"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/forgotPassword": {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Admin forgot password",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "Admin email address"
+                  }
+                },
+                "required": [
+                  "email"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Email sent successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "email sent successfully"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/resetPassword": {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Admin reset password",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "resetToken": {
+                    "type": "string",
+                    "description": "Token for password reset"
+                  },
+                  "newPassword": {
+                    "type": "string",
+                    "description": "New password"
+                  }
+                },
+                "required": [
+                  "resetToken",
+                  "newPassword"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Password reset successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Password reset successfully"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/changePassword": {
+      "put": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Admin change password",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "currentPassword": {
+                    "type": "string",
+                    "description": "Current password"
+                  },
+                  "newPassword": {
+                    "type": "string",
+                    "description": "New password"
+                  }
+                },
+                "required": [
+                  "currentPassword",
+                  "newPassword"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Password changed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Password changed successfully"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/getProfile": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Get admin profile",
+        "responses": {
+          "200": {
+            "description": "Admin profile retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Profile retrieved successfully"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/updateProfile": {
+      "put": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Update admin profile",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string"
+                  },
+                  "lastName": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "firstName",
+                  "lastName"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Profile updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Profile updated successfully"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/dashboard": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Get admin dashboard stats",
+        "responses": {
+          "200": {
+            "description": "Dashboard stats retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "totalRegisteredUser": {
+                          "type": "number"
+                        },
+                        "totalBlockedUser": {
+                          "type": "number"
+                        },
+                        "highestMatchUser": {
+                          "type": "number"
+                        },
+                        "topReportedUser": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        }
+                      },
+                      "description": "Dashboard statistics"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Dashboard stats retrieved successfully"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/reportedUser/list": {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Get a paginated list of reported users",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "page": {
+                    "type": "integer",
+                    "description": "The page number for pagination",
+                    "example": 1
+                  },
+                  "limit": {
+                    "type": "integer",
+                    "description": "The number of records per page",
+                    "example": 10
+                  },
+                  "search": {
+                    "type": "string",
+                    "description": "Search query to filter users",
+                    "example": "john"
+                  },
+                  "sort": {
+                    "type": "string",
+                    "enum": [
+                      "asc",
+                      "desc"
+                    ],
+                    "description": "Sort order"
+                  },
+                  "sortField": {
+                    "type": "string",
+                    "description": "Field to sort by",
+                    "example": "name"
+                  }
+                },
+                "required": [
+                  "page",
+                  "limit"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User list retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      },
+                      "description": "Array of user data"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User list retrieved successfully"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/report/{id}": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Get details of a specific report",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The ID of the report"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Report details retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "description": "The report details"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Report details retrieved successfully"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/superLikedUser/list": {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Get a paginated list of superliked users",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "page": {
+                    "type": "integer",
+                    "description": "The page number for pagination",
+                    "example": 1
+                  },
+                  "limit": {
+                    "type": "integer",
+                    "description": "The number of records per page",
+                    "example": 10
+                  },
+                  "search": {
+                    "type": "string",
+                    "description": "Search query to filter users",
+                    "example": "john"
+                  },
+                  "sort": {
+                    "type": "string",
+                    "enum": [
+                      "asc",
+                      "desc"
+                    ],
+                    "description": "Sort order"
+                  },
+                  "sortField": {
+                    "type": "string",
+                    "description": "Field to sort by",
+                    "example": "name"
+                  }
+                },
+                "required": [
+                  "page",
+                  "limit"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User list retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      },
+                      "description": "Array of user data"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User list retrieved successfully"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/user/changeStatus": {
+      "put": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Change user status",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "description": "User ID",
+                    "example": "asdasd1"
+                  },
+                  "isActive": {
+                    "type": "boolean",
+                    "description": "User status (true for active, false for inactive)",
+                    "example": true
+                  }
+                },
+                "required": [
+                  "_id",
+                  "isActive"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User status changed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "description": "Updated user data",
+                      "example": {
+                        "_id": "asdasd1",
+                        "isActive": true
+                      }
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User status changed successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Missing or invalid parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid parameters"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "An unexpected error occurred"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/getSuggestedProfiles": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get suggested profiles",
+        "description": "In this API, we provide user suggestions from the `userProfile` table, filtering out profiles that exist in leftSwipe, rightSwipe, or blockedUsers. The account should be active. Results are returned in batches of 5, along with the total number of profiles available for the given preferences.\n",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "preferences": {
+                    "type": "object",
+                    "description": "Preferences for filtering suggestions"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Suggested profiles retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      },
+                      "description": "Array of suggested profiles"
+                    },
+                    "totalResult": {
+                      "type": "number",
+                      "description": "Total number of profiles available"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/userSwipe": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Perform user swipe",
+        "description": "This API handles both left and right swipes. Left swipes are added to the `leftSwipes` array, while right swipes are added to the `rightSwipes` array in userProfile collection. It checks for matches and validates if the profile is active.\n",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "left",
+                      "right"
+                    ],
+                    "description": "Type of swipe"
+                  },
+                  "profileId": {
+                    "type": "string",
+                    "description": "ID of the profile being swiped"
+                  },
+                  "isSuperLiked": {
+                    "type": "boolean",
+                    "description": "Whether the profile is super liked"
+                  },
+                  "comment": {
+                    "type": "string",
+                    "description": "Optional comment"
+                  }
+                },
+                "required": [
+                  "type",
+                  "profileId"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Swipe performed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "isMatch": {
+                      "type": "boolean",
+                      "description": "Whether the swipe resulted in a match"
+                    },
+                    "rightSwipeLeft": {
+                      "type": "number",
+                      "description": "Number of remaining right swipes"
+                    },
+                    "superLikeCount": {
+                      "type": "number",
+                      "description": "Number of remaining super likes"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/likedMeUsers": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get users who liked me",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "filter": {
+                    "type": "string",
+                    "enum": [
+                      "all",
+                      "new",
+                      "nearBy",
+                      "superLiked"
+                    ],
+                    "description": "Filter for liked users"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Liked users retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      },
+                      "description": "Array of liked users"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/removeMatch": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Remove a match",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userId": {
+                    "type": "string",
+                    "description": "ID of the user to remove match with"
+                  }
+                },
+                "required": [
+                  "userId"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Match removed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Match removed successfully"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/myConversations": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get my conversations",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "page": {
+                    "type": "number",
+                    "description": "Page number for pagination",
+                    "example": 1
+                  },
+                  "limit": {
+                    "type": "number",
+                    "description": "Number of records per page",
+                    "example": 10
+                  }
+                },
+                "required": [
+                  "page",
+                  "limit"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Conversations retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      },
+                      "description": "Array of conversations"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/startConversation": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Start a conversation",
+        "description": "Creates a socket room and a new document in the conversation collection.\n",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "matchId": {
+                    "type": "string",
+                    "description": "Match ID for the conversation"
+                  },
+                  "message": {
+                    "type": "string",
+                    "description": "Initial message"
+                  }
+                },
+                "required": [
+                  "matchId",
+                  "message"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Room created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Room created successfully"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/myMatches": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get my matches",
+        "responses": {
+          "200": {
+            "description": "Matches retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      },
+                      "description": "Array of matches"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/{id}/deleteOrBlock": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Delete or block a user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "report",
+                      "block"
+                    ],
+                    "description": "Action type (report or block)"
+                  },
+                  "comment": {
+                    "type": "string",
+                    "description": "Optional comment for the action"
+                  }
+                },
+                "required": [
+                  "type"
+                ]
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "ID of the user to delete or block"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Action performed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Success"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/cms": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get CMS content",
+        "description": "Retrieve content like terms and conditions, privacy policy, FAQs, and splash screens for the user.",
+        "responses": {
+          "200": {
+            "description": "CMS content retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "termsAndCond": {
+                      "type": "string",
+                      "description": "Terms and conditions text"
+                    },
+                    "privacyPolicy": {
+                      "type": "string",
+                      "description": "Privacy policy text"
+                    },
+                    "faq": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      },
+                      "description": "Array of FAQ entries"
+                    },
+                    "splashScreen": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      },
+                      "description": "Array of splash screen data"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
